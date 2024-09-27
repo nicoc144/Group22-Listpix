@@ -12,7 +12,7 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.user)
 
-class Post(models.Model): #TODO: maybe move classes related to posting/deleting into a separate app
+class Post(models.Model): #maybe move this class into a separate post app 
     caption = models.CharField(max_length=55)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='post_images/', height_field=None, width_field=None, max_length=None)
