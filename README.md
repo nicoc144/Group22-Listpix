@@ -11,7 +11,7 @@ How to Build:
 
 How to navigate to the admin page:
 1. You can create an admin account using the command "python manage.py createsuperuser" in terminal.
-2. You can go to the admin page by adding "/admin/" to the url.
+2. You can go to the admin page by adding "/admin" to the url.
 
 How to migrate to the database:
 1. Type command "python manage.py makemigrations" to generate migration files from the models to the database (database handling is done automatically by django via this command)
