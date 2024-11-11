@@ -1,4 +1,3 @@
-<!--Profile view-->
 {% load static %}
 
 <!DOCTYPE html>
@@ -43,8 +42,9 @@
             Bio: 
             {{ user.profile.bio }}
         </h3>
-        <form action="{% url 'update_user' %}" method="get">
-            <button type="submit" class="btn">Update Profile</button>
+        
+        <form action="{% url 'profile' %}" method="get">
+            <button type="submit" class="btn">Done</button>
         </form>
     </body>
 

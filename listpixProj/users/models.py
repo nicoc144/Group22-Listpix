@@ -13,9 +13,10 @@ class Profile(models.Model):
         return str(self.user)
 
 class Post(models.Model): #maybe move this class into a separate post app 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     caption = models.CharField(max_length=55)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(null = True, blank = True, upload_to='post_images', height_field=None, width_field=None, max_length=None)
+    created_at = models.DateTimeField(auto_now_add=True) #save time and date for each post
     
     def __str__(self):
         return self.caption + ' | ' + self.author
