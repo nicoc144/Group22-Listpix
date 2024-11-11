@@ -2,19 +2,32 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> My Profile - Listpix </title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta 
+            name    = "color-scheme" 
+            content = "light dark"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> My Profile - Listpix </title>
+    </head>
 
-<body>
-    <h1>
-        My Profile
-    </h1>
-    <h2>
-        @username
-    </h2>
-</body>
+    <body>
+        <h1>
+            My Profile
+        </h1>
+        <h2>
+            {% if user.profile.profilePic %}
+            <img src="{{ user.profile.profilePic.url }}"
+            class = "rounded-circle">
+            @{{ user.username }}
+            {% else %}
+            {% endif %}
+        </h2>
+        <h3>
+            Bio: 
+            {{ user.profile.bio }}
+        </h3>
+    </body>
 
 </html>
