@@ -6,7 +6,7 @@ How to Build:
 1. Clone the project and pull the code from the repository.
 2. Make sure you have django installed "pip3 install django".
 3. In the "Group22-Listpix" file type the command "source listpixenv/bin/activate" to activate the virtual environment.
-4. Chagne directory to the "listpixProj" file.
+4. Change directory to the "listpixProj" file.
 5. Type the command "python manage.py runserver" to run the server (it should produce a link which will link you to the user's view).
 
 How to navigate to the admin page:
