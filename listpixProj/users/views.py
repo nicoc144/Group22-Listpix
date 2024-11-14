@@ -14,25 +14,24 @@ def profile(request):
 
 @login_required #only logged in users can access
 def update_u(request):
-    current_user = request.user 
+    current_user = request.user #get the current user and save it as obj User
     
-    profile = Profile.objects.get(user=current_user)
+    profile = Profile.objects.get(user=current_user) #each profile instance is 1 to 1 with a user, so set profile here
     
-    if request.method == "POST":
+    if request.method == "POST": #check if user submitted a form to update profile
         user_form = UpdateUserForm(request.POST, instance=current_user)
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=profile)
-        if user_form.is_valid() and profile_form.is_valid():
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=profile) #need to request FILES for this form, because it handles images
+        if user_form.is_valid() and profile_form.is_valid(): 
             user_form.save()
             profile_form.save()
             return redirect('profile')
-    else:
+    else: #not a post request, just fill out the forms with the user data (this is why you see the text boxes already filled out)
         user_form = UpdateUserForm(instance = current_user)
         profile_form = UpdateProfileForm(instance = profile)
     
-    context = {
+    context = { #context is needed to pass forms into template
         'user_form': user_form,
         'profile_form': profile_form, 
     }
     
-    #TODO: add logic here if user user is not logged they cant view the update page
     return render(request, "users/update_user.html", context)
