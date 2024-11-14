@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User #import user objects from django (this will manage the list of users)
 from django.db import models
+import random
 
 class Post(models.Model): #maybe move this class into a separate post app 
     content = models.CharField(max_length=55)
@@ -35,7 +36,17 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     profilePic = models.ImageField(null = True, blank = True, upload_to='profile_pics', height_field=None, width_field=None, max_length=None)
     
+    assigned_tasks = models.ManyToManyField('BucketListItem', blank=True)
+
     def __str__(self):
         return str(self.user)
 
 #this is the data corresponding to the data in the database (ie user table would have username, password, maybe email)
+    
+class BucketListItem(models.Model):
+    task_name = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.task_name
+    
+#data of bucket list items/tasks
