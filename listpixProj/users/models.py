@@ -1,7 +1,33 @@
 from django.contrib.auth.models import User #import user objects from django (this will manage the list of users)
 from django.db import models
 
-# Create your models here.
+class Post(models.Model): #maybe move this class into a separate post app 
+    content = models.CharField(max_length=55)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    image = models.ImageField(upload_to='post_images/', height_field=None, width_field=None, max_length=None)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.user.username + ' | ' + self.content}..."
+    
+
+class Comment(models.Model):
+    content = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comments')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.content[:20]}..."
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+
+    def __str__(self):
+        return f"{self.user.username} liked {self.post.content[:20]}..."
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #1 to 1 relationship of the profile model with the user model
@@ -11,14 +37,5 @@ class Profile(models.Model):
     
     def __str__(self):
         return str(self.user)
-
-class Post(models.Model): #maybe move this class into a separate post app 
-    caption = models.CharField(max_length=55)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='post_images/', height_field=None, width_field=None, max_length=None)
-    
-    def __str__(self):
-        return self.caption + ' | ' + self.author
-    
 
 #this is the data corresponding to the data in the database (ie user table would have username, password, maybe email)
