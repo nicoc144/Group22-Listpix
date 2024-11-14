@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comment
+from .models import Post, Comment, Profile
 from django.contrib.auth.models import User
 
 class UsernameChangeForm(forms.ModelForm):
@@ -16,3 +16,15 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+
+class UpdateUserForm(forms.ModelForm): 
+    email = forms.EmailField()
+    
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+class UpdateProfileForm(forms.ModelForm):    
+    class Meta:
+        model = Profile
+        fields = ['bio', 'profilePic']

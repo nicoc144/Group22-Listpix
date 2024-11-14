@@ -1,0 +1,57 @@
+<!--Profile view-->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta 
+            name    = "color-scheme" 
+            content = "light dark"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> My Profile - Listpix </title>
+        <style>
+            .profile-pic{
+                width: 100px;      
+                height: 100px;  
+                border-radius: 50%; 
+                object-fit: cover;  
+            }
+            
+        </style>
+    </head>
+
+
+    <body>
+        <h1>
+            Listpix
+        </h1>
+        <h2>
+            {% if user.profile.profilePic %}
+                <img src="{{ user.profile.profilePic.url }}"
+                class="profile-pic">
+            {%else%}
+                <img src="{% static 'default.jpg' %}"
+                class="profile-pic">
+            {%endif%}
+            
+            @{{ user.username }}
+        </h2>
+
+        <h3>
+            Bio: 
+            {{ user.profile.bio }}
+        </h3>
+
+        <form action="{% url 'update_user' %}" method="get">
+            <button type="submit" class="btn">Update Profile</button>
+        </form>
+
+        <h3>
+            Posts:
+        </h3>
+    </body>
+
+</html>
