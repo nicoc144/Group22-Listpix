@@ -8,10 +8,10 @@
         <meta charset="UTF-8">
         <meta 
             name    = "color-scheme" 
-            content = "light dark"
+            content = "light"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> My Profile - Listpix </title>
+        <title> My Profile - LISTPIX </title>
         <style>
             .profile-pic{
                 width: 100px;      
@@ -47,6 +47,10 @@
 
         <form action="{% url 'update_user' %}" method="get">
             <button type="submit" class="btn">Update Profile</button>
+        </form>
+
+        <form action="{% url 'feed' %}" method="get">
+            <button type="submit" class="btn">Back To Feed</button>
         </form>
 
         <h3>

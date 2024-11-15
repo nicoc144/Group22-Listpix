@@ -148,6 +148,8 @@ def search_users(request):
         Q(last_name__icontains=query)
     )
     return render(request, 'users/search_users.html', {'users': users, 'query': query})
+
+@login_required
 def profile(request): 
     context={}
     return render(request, "users/profile.html", context)

@@ -4,8 +4,8 @@ import random
 
 class Post(models.Model): #maybe move this class into a separate post app 
     content = models.CharField(max_length=55)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
-    image = models.ImageField(upload_to='post_images', height_field=None, width_field=None, max_length=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    image = models.ImageField(null = True, blank = True, upload_to='post_images', height_field=None, width_field=None, max_length=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
