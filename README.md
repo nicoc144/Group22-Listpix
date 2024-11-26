@@ -1,3 +1,5 @@
+CURRENTLY IN PROGRESS 11/26/2024
+
 Django Documentation: https://docs.djangoproject.com/en/5.1/
 
 How to Build:
