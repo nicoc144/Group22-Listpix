@@ -2,7 +2,7 @@ from django.contrib.auth.models import User #import user objects from django (th
 from django.db import models
 import random
 
-class Post(models.Model): #maybe move this class into a separate post app 
+class Post(models.Model): 
     content = models.CharField(max_length=55)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     image = models.ImageField(null = True, blank = True, upload_to='post_images', height_field=None, width_field=None, max_length=None)
