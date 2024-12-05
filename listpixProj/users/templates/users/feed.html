@@ -5,6 +5,11 @@
   {% for post in posts %}
     <div class="card mb-3">
       <div class="card-body">
+        {% if post.image %}
+        <div class="post-image-container">
+          <img src="{{ post.image.url }}" alt="Post Image" style="max-width: 100%; height: auto; width: 400px; clip-path: inset(5% round 15px);">
+        </div>
+        {% endif %} 
         <p class="card-text">{{ post.content }}</p>
         <p class="card-text">Posted by: {{ post.user.username }} on {{ post.created_at }}</p>
         {% comment %} <p class="card-text">Likes: {{ post.likes.count }}</p> {% endcomment %}
