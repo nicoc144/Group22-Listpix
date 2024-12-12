@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.db.models import Q
 from .forms import UpdateUserForm, UpdateProfileForm
 from .models import Profile
-
+from django.http import JsonResponse
 
 # Signup View
 def signup(request):
@@ -107,17 +107,16 @@ def like(request, pk):
     return redirect('feed')
 
 # View for showing a user's profile
-
-# def user_profile(request, username):
-#     user = get_object_or_404(User, username=username)
-#     posts = Post.objects.filter(user=user)
-#     likes = Like.objects.filter(user=user)
-#     context = {
-#         'profile_user': user,
-#         'posts': posts,
-#         'likes': likes,
-#     }
-#     return render(request, 'users/user_profile.html', context)
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(user=user)
+    likes = Like.objects.filter(user=user)
+    context = {
+        'profile_user': user,
+        'posts': posts,
+        'likes': likes,
+    }
+    return render(request, 'users/user_profile.html', context)
 
 # View for showing a other user's profile for logged out users
 def guest_feed(request, username):
@@ -142,11 +141,7 @@ def change_username(request):
 # View for searching users
 def search_users(request):
     query = request.GET.get('q', '')
-    users = User.objects.filter(
-        Q(username__icontains=query) |
-        Q(first_name__icontains=query) |
-        Q(last_name__icontains=query)
-    )
+    users = User.objects.filter(username__icontains=query) if query else []
     return render(request, 'users/search_users.html', {'users': users, 'query': query})
 
 @login_required
