@@ -13,6 +13,14 @@ class Post(models.Model):
     def __str__(self):
         return f"{self.user.username + ' | ' + self.content}..."
     
+    def delete(self, *args, **kwargs):
+        # Reassign the task to the user's assigned tasks if it exists
+        if self.task:
+            profile = self.user.profile
+            profile.assigned_tasks.add(self.task)
+            profile.save()
+        super().delete(*args, **kwargs)
+    
 
 class Comment(models.Model):
     content = models.TextField()
