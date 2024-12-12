@@ -8,9 +8,18 @@ class Post(models.Model):
     image = models.ImageField(null = True, blank = True, upload_to='post_images', height_field=None, width_field=None, max_length=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    task = models.ForeignKey('BucketListItem', on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
         return f"{self.user.username + ' | ' + self.content}..."
+    
+    def delete(self, *args, **kwargs):
+        # Reassign the task to the user's assigned tasks if it exists
+        if self.task:
+            profile = self.user.profile
+            profile.assigned_tasks.add(self.task)
+            profile.save()
+        super().delete(*args, **kwargs)
     
 
 class Comment(models.Model):
@@ -36,7 +45,8 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     profilePic = models.ImageField(null = True, blank = True, upload_to='profile_pics', height_field=None, width_field=None, max_length=None)
     
-    assigned_tasks = models.ManyToManyField('BucketListItem', blank=True)
+    assigned_tasks = models.ManyToManyField('BucketListItem', related_name='tasks_assigned', blank=True)
+    completed_tasks = models.ManyToManyField('BucketListItem', related_name='completed_by', blank=True)
 
     def __str__(self):
         return str(self.user)
@@ -45,6 +55,9 @@ class Profile(models.Model):
     
 class BucketListItem(models.Model):
     task_name = models.CharField(max_length=255)
+
+    assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='assigned_by', blank=True, null=True)
+    completed = models.BooleanField(default=False)
     
     def __str__(self):
         return self.task_name
