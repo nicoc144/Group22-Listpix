@@ -1,4 +1,5 @@
 {% extends 'users/base.html' %}
+{% load static %}
 
 {% block content %}
   <h2>Feed</h2>
@@ -16,11 +17,14 @@
         <div class="d-flex justify-content-between">
           <div>
             <a href="{% url 'comment_create' post.pk %}" class="btn btn-primary btn-sm">Add Comment</a>
-            <a href="{% url 'like' post.pk %}" class="btn btn-secondary btn-sm">Like {{ post.likes.count }}</a>
+            {%if request.user.is_authenticated%}
+              {% if post.id in likes%}
+                <a href="{% url 'like' post.pk %}" class="btn btn-sm"> {{ post.likes.count }} <img src="{% static 'blue-heart.png' %}" class="small-icon2"></a>
+              {%else%}
+                <a href="{% url 'like' post.pk %}" class="btn btn-sm"> {{ post.likes.count }} <img src="{% static 'grey-heart.png' %}" class="small-icon2"></a>
+              {%endif%}
+            {%endif%}
           </div>
-          {% if post.user == request.user %}
-            <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger btn-sm">Delete</a>
-          {% endif %}
         </div>
       </div>
       {% if post.comments.exists %}

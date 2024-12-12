@@ -1,38 +1,24 @@
+{% extends 'users/base.html' %}
+{% load bootstrap5 %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block content %}
+<div class="row justify-content-center">
+    <div>
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">Update Profile</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form user_form %}
+                    {% bootstrap_form profile_form %}
+                    <button type="submit" class="btn btn-primary w-100 mt-3">Done </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta 
-            name    = "color-scheme" 
-            content = "light"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> My Profile - LISTPIX </title>
-        <style>
-            .profile-pic{
-                width: 100px;      
-                height: 100px;  
-                border-radius: 50%; 
-                object-fit: cover;  
-            }
-            
-        </style>
-    </head>
-
-
-    <body>
-        <h1>
-            Listpix
-        </h1>
-        <h2>Update Profile</h2>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-        <button type="submit">Done</button>
-    </body>
-
-</html>
+{% endblock %}

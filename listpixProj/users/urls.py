@@ -29,8 +29,6 @@ urlpatterns = [
     path('comment/<int:pk>/delete/', views.comment_delete, name='comment_delete'),
     # Like Post
     path('post/<int:pk>/like/', views.like, name='like'),
-    # Redirecting to Latest Username
-    #re_path(r'^profile/(?!change-username/)(?P<username>\w+)/$', views.user_profile, name='user_profile'),
     # For fetching user the username on posts
     path('guest/profile/<str:username>/', views.guest_feed, name='guest_profile'),
     # Change Username
@@ -38,7 +36,9 @@ urlpatterns = [
     # Search Users
     path('search/', views.search_users, name='search_users'),
     # User Profile Page
-    path("profile/", views.profile, name="profile"),
+    path('user_profile/', views.user_profile, name='user_profile'),
     # Update User Screen
     path('update_user/', views.update_u, name='update_user'),
+    # User Liked Posts
+    path('user_liked/', views.user_liked, name='user_liked'),
 ]

@@ -45,10 +45,13 @@ def logout_view(request):
     return redirect('login')
 
 # View for Logged In User Feed and Logged Out User Feed
-def feed(request):
+def feed(request):        
     posts = Post.objects.all().order_by('-created_at')
     if request.user.is_authenticated:
-        return render(request, 'users/feed.html', {'posts': posts})
+        current_user = request.user
+        likes = Like.objects.filter(user=current_user).values_list('post_id', flat=True)
+        return render(request, 'users/feed.html', {'posts': posts, 'likes' : likes})
+    
     else:
         return render(request, 'users/guest_feed.html', {'posts': posts})
     
@@ -71,7 +74,8 @@ def post_create(request):
 def post_delete(request, pk):
     post = get_object_or_404(Post, pk=pk, user=request.user)
     post.delete()
-    return redirect('feed')
+    next_url = request.GET.get('next', 'feed')
+    return redirect(next_url)
 
 # View for Commenting on a Post
 @login_required
@@ -84,7 +88,8 @@ def comment_create(request, pk):
             comment.user = request.user
             comment.post = post
             comment.save()
-            return redirect('feed')
+            next_url = request.GET.get('next', 'feed')
+            return redirect(next_url)
     else:
         form = CommentForm()
     return render(request, 'users/comment_create.html', {'form': form, 'post': post})
@@ -94,7 +99,8 @@ def comment_create(request, pk):
 def comment_delete(request, pk):
     comment = get_object_or_404(Comment, pk=pk, user=request.user)
     comment.delete()
-    return redirect('feed')
+    next_url = request.GET.get('next', 'feed')
+    return redirect(next_url)
 
 # View for Liking a Post
 @login_required
@@ -104,20 +110,8 @@ def like(request, pk):
     if not created:
         like_obj.delete()
     like_count = Like.objects.filter(post=post).count()
-    return redirect('feed')
-
-# View for showing a user's profile
-
-# def user_profile(request, username):
-#     user = get_object_or_404(User, username=username)
-#     posts = Post.objects.filter(user=user)
-#     likes = Like.objects.filter(user=user)
-#     context = {
-#         'profile_user': user,
-#         'posts': posts,
-#         'likes': likes,
-#     }
-#     return render(request, 'users/user_profile.html', context)
+    next_url = request.GET.get('next', 'feed')
+    return redirect(next_url)
 
 # View for showing a other user's profile for logged out users
 def guest_feed(request, username):
@@ -150,9 +144,36 @@ def search_users(request):
     return render(request, 'users/search_users.html', {'users': users, 'query': query})
 
 @login_required
-def profile(request): 
-    context={}
-    return render(request, "users/profile.html", context)
+def user_profile(request): 
+    current_user = request.user
+    posts = Post.objects.all().order_by('-created_at')
+    profile = Profile.objects.get(user=current_user)
+    user_form = UpdateUserForm(instance = current_user)
+    profile_form = UpdateProfileForm(instance = profile)
+    likes = Like.objects.filter(user=current_user)
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form, 
+        'posts': posts,
+        'likes' : likes
+    }
+    return render(request, "users/user_profile.html", context)
+
+@login_required
+def user_liked(request): 
+    current_user = request.user
+    posts = Post.objects.all().order_by('-created_at')
+    profile = Profile.objects.get(user=current_user)
+    user_form = UpdateUserForm(instance = current_user)
+    profile_form = UpdateProfileForm(instance = profile)
+    likes = Like.objects.filter(user=current_user)
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form, 
+        'posts': posts,
+        'likes' : likes
+    }
+    return render(request, "users/user_liked.html", context)
 
 @login_required #only logged in users can access
 def update_u(request):
@@ -166,7 +187,7 @@ def update_u(request):
         if user_form.is_valid() and profile_form.is_valid(): 
             user_form.save()
             profile_form.save()
-            return redirect('profile')
+            return redirect('user_profile')
     else: #not a post request, just fill out the forms with the user data (this is why you see the text boxes already filled out)
         user_form = UpdateUserForm(instance = current_user)
         profile_form = UpdateProfileForm(instance = profile)
