@@ -38,9 +38,7 @@ urlpatterns = [
     # Other User's Profile
     path('profile/<str:username>/', views.user_profile, name='user_profile'),
     # User Profile Page
-    path('user_profile/', views.user_profile, name='user_profile'),
+    path('user_profile/<str:username>/', views.user_profile, name='user_profile'),
     # Update User Screen
     path('update_user/', views.update_u, name='update_user'),
-    # User Liked Posts
-    path('user_liked/', views.user_liked, name='user_liked'),
 ]

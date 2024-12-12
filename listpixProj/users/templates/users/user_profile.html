@@ -49,6 +49,9 @@
           <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab" aria-controls="posts" aria-selected="true">Posts</button>
         </li>
         <li class="nav-item" role="presentation">
+          <button class="nav-link" id="assigned-tasks-tab" data-bs-toggle="tab" data-bs-target="#likes" type="button" role="tab" aria-controls="likes" aria-selected="false">Likes</button>
+        </li>
+        <li class="nav-item" role="presentation">
           <button class="nav-link" id="assigned-tasks-tab" data-bs-toggle="tab" data-bs-target="#assigned-tasks" type="button" role="tab" aria-controls="assigned-tasks" aria-selected="false">Assigned Tasks</button>
         </li>
         <li class="nav-item" role="presentation">
@@ -82,6 +85,31 @@
               {% endif %}
             {% endfor %}
           </div>
+        </div>
+
+        <!-- likes tab -->
+        <div class="tab-pane fade" id="likes" role="tabpanel" aria-labelledby="like-tab">
+          <h4 class="mt-3">Liked Posts</h4>
+          {% for like in likes %}
+        <div class="card mb-3">
+          <div class="card-body">
+            {% if like.post.image %}
+              <div class="post-image-container">
+                <img src="{{ like.post.image.url }}" alt="Post Image" style="max-width: 100%; height: auto; width: 400px; clip-path: inset(5% round 15px);">
+              </div>
+            {%endif%}
+            <p class="card-text">{{ like.post.content }}</p>
+            <p class="card-text">Posted by: {{ like.post.user.username }} on {{ like.post.created_at }}</p>
+            <a href="{% url 'comment_create' like.post.pk %}?next={{ request.path }}" class="btn btn-primary btn-sm">Add Comment</a>
+            <a href="{% url 'like' like.post.pk %}?next={{ request.path }}" class="btn btn-sm"> {{ post.likes.count }} <img src="{% static 'blue-heart.png' %}" class="small-icon2"></a>
+          </div>
+        </div>
+        {% empty %}
+        <h2> </h2>
+        <ul>
+      <p>This user has no liked posts.</p>
+        </ul>
+    {% endfor %}
         </div>
 
         <!-- Assigned Tasks Tab -->

@@ -155,15 +155,15 @@ def search_users(request):
     return render(request, 'users/search_users.html', {'users': users, 'query': query})
 
 @login_required
-def user_profile(request): 
-    current_user = request.user
+def user_profile(request, username): 
+    current_user = get_object_or_404(User, username=username)
+    user_profile = get_object_or_404(Profile, user=current_user)
     posts = Post.objects.all().order_by('-created_at')
-    profile = Profile.objects.get(user=current_user)
     user_form = UpdateUserForm(instance = current_user)
-    profile_form = UpdateProfileForm(instance = profile)
+    profile_form = UpdateProfileForm(instance = user_profile)
     likes = Like.objects.filter(user=current_user)
-    assigned_tasks = profile.assigned_tasks.all()
-    completed_tasks = profile.completed_tasks.all()
+    assigned_tasks = user_profile.assigned_tasks.all()
+    completed_tasks = user_profile.completed_tasks.all()
     context = {
         'user_form': user_form,
         'profile_form': profile_form, 
