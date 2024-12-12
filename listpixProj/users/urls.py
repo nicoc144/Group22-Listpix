@@ -35,6 +35,8 @@ urlpatterns = [
     path('profile/change-username/', views.change_username, name='change_username'),
     # Search Users
     path('search/', views.search_users, name='search_users'),
+    # Other User's Profile
+    path('profile/<str:username>/', views.user_profile, name='user_profile'),
     # User Profile Page
     path('user_profile/', views.user_profile, name='user_profile'),
     # Update User Screen

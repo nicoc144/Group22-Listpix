@@ -3,7 +3,7 @@ from django.db import models
 import random
 
 class Post(models.Model): 
-    content = models.CharField(max_length=55)
+    content = models.CharField(max_length=1000)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     image = models.ImageField(null = True, blank = True, upload_to='post_images', height_field=None, width_field=None, max_length=None)
     created_at = models.DateTimeField(auto_now_add=True)

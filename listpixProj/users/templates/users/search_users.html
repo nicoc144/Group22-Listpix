@@ -1,0 +1,28 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4 text-center">Search Users</h1>
+    
+    <!-- Search Form -->
+    <form method="get" action="{% url 'search_users' %}" class="d-flex justify-content-center mb-4">
+        <input type="text" name="q" class="form-control me-2" placeholder="Search by username" value="{{ query }}" aria-label="Search by username">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    {% if users %}
+        <h2 class="mb-3">Results:</h2>
+        <ul class="list-group">
+            {% for user in users %}
+                <li class="list-group-item">
+                    <a href="{% url 'user_profile' user.username %}" class="text-decoration-none">
+                        {{ user.username }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif query %}
+        <p class="text-muted">No users found for "{{ query }}".</p>
+    {% endif %}
+</div>
+{% endblock %}

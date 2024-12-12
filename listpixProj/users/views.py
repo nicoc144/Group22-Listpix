@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.db.models import Q
 from .forms import UpdateUserForm, UpdateProfileForm
 from .models import Profile
-
+from django.http import JsonResponse
 
 # Signup View
 def signup(request):
@@ -151,11 +151,7 @@ def change_username(request):
 # View for searching users
 def search_users(request):
     query = request.GET.get('q', '')
-    users = User.objects.filter(
-        Q(username__icontains=query) |
-        Q(first_name__icontains=query) |
-        Q(last_name__icontains=query)
-    )
+    users = User.objects.filter(username__icontains=query) if query else []
     return render(request, 'users/search_users.html', {'users': users, 'query': query})
 
 @login_required
