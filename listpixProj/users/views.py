@@ -6,13 +6,10 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from users.models import Post, Comment, Like
-from .forms import PostForm, CommentForm, UsernameChangeForm
+from .forms import PostForm, CommentForm, UsernameChangeForm, UpdateUserForm, UpdateProfileForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
-from django.db.models import Q
-from .forms import UpdateUserForm, UpdateProfileForm
 from .models import Profile
-from django.http import JsonResponse
 
 # Signup View
 def signup(request):
@@ -191,7 +188,7 @@ def user_liked(request):
     }
     return render(request, "users/user_liked.html", context)
 
-@login_required #only logged in users can access
+@login_required 
 def update_u(request):
     current_user = request.user #get the current user and save it as obj User
     
