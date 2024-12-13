@@ -156,19 +156,20 @@ def search_users(request):
 
 @login_required
 def user_profile(request, username): 
-    current_user = get_object_or_404(User, username=username)
-    user_profile = get_object_or_404(Profile, user=current_user)
-    posts = Post.objects.all().order_by('-created_at')
-    user_form = UpdateUserForm(instance = current_user)
-    profile_form = UpdateProfileForm(instance = user_profile)
-    likes = Like.objects.filter(user=current_user)
+    profile_user = get_object_or_404(User, username=username)
+    user_profile = get_object_or_404(Profile, user=profile_user)
+    posts = Post.objects.filter(user=profile_user).order_by('-created_at')
+    user_form = UpdateUserForm(instance=profile_user)
+    profile_form = UpdateProfileForm(instance=user_profile)
+    likes = Like.objects.filter(user=profile_user)
     assigned_tasks = user_profile.assigned_tasks.all()
     completed_tasks = user_profile.completed_tasks.all()
     context = {
+        'profile_user': profile_user,  
         'user_form': user_form,
         'profile_form': profile_form, 
         'posts': posts,
-        'likes' : likes,
+        'likes': likes,
         'assigned_tasks': assigned_tasks,
         'completed_tasks': completed_tasks
     }
