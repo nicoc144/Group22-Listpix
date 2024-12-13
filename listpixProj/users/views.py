@@ -200,7 +200,7 @@ def update_u(request):
         if user_form.is_valid() and profile_form.is_valid(): 
             user_form.save()
             profile_form.save()
-            return redirect('user_profile')
+            return redirect('user_profile', username=current_user.username)
     else: #not a post request, just fill out the forms with the user data (this is why you see the text boxes already filled out)
         user_form = UpdateUserForm(instance = current_user)
         profile_form = UpdateProfileForm(instance = profile)
