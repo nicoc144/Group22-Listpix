@@ -17,7 +17,7 @@ How to migrate to the database:
 1. Type command "python manage.py makemigrations" to generate migration files from the models to the database (database handling is done automatically by django via this command)
 2. Type command "python manage.py migrate" to actually apply the changes to the database
 
-Future Features:
+Future Features (still in issue tracker):
 1. Security - Account Lockout
 2. List Generation/Management - Reroll ability
 3. Interactions - Users can follow other users
